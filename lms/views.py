@@ -10,6 +10,8 @@ class CourseViewSet(ModelViewSet):
     queryset = Course.objects.all()
 
 
+
+
 class LessonCreateAPIView(CreateAPIView):
     serializer_class = LessonSerializer
 
