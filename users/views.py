@@ -4,12 +4,20 @@ from rest_framework.generics import ListAPIView
 from rest_framework.viewsets import ModelViewSet
 
 from users.models import User, Payment
-from users.serializers import UserSerializer, PaymentsListSerializer
+from users.serializers import (
+    UserSerializer,
+    PaymentsListSerializer,
+    UserRetrieveSerializer,
+)
 
 
 class UserViewSet(ModelViewSet):
-    serializer_class = UserSerializer
     queryset = User.objects.all()
+
+    def get_serializer_class(self):
+        if self.action == "retrieve":
+            return UserRetrieveSerializer
+        return UserSerializer
 
 
 class PaymentListAPIView(ListAPIView):
@@ -17,5 +25,5 @@ class PaymentListAPIView(ListAPIView):
     queryset = Payment.objects.all()
 
     filter_backends = [OrderingFilter, DjangoFilterBackend]
-    ordering_fields = ('date',)
-    filterset_fields = ('payment_course', 'payment_lesson', 'payment_method')
+    ordering_fields = ("date",)
+    filterset_fields = ("payment_course", "payment_lesson", "payment_method")
