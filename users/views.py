@@ -1,6 +1,8 @@
 from django_filters.rest_framework import DjangoFilterBackend
-from rest_framework.filters import SearchFilter, OrderingFilter
-from rest_framework.generics import ListAPIView
+from rest_framework.decorators import api_view, permission_classes
+from rest_framework.filters import OrderingFilter
+from rest_framework.generics import ListAPIView, CreateAPIView
+from rest_framework.permissions import IsAuthenticated, AllowAny, DjangoModelPermissions
 from rest_framework.viewsets import ModelViewSet
 
 from users.models import User, Payment
@@ -13,11 +15,17 @@ from users.serializers import (
 
 class UserViewSet(ModelViewSet):
     queryset = User.objects.all()
+    permission_classes = [AllowAny]
 
     def get_serializer_class(self):
         if self.action == "retrieve":
             return UserRetrieveSerializer
         return UserSerializer
+
+    def perform_create(self, serializer):
+        user = serializer.save(is_active=True)
+        user.set_password(user.password)
+        user.save()
 
 
 class PaymentListAPIView(ListAPIView):
