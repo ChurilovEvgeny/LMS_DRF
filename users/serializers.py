@@ -15,8 +15,20 @@ class UserSerializer(serializers.ModelSerializer):
         fields = "__all__"
 
 
+class UserShortSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = User
+        fields = ("id", "email")
+
+
+class UserListSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = User
+        fields = ("id", "email")
+
+
 class UserRetrieveSerializer(serializers.ModelSerializer):
-    payments = PaymentsListSerializer(many=True)
+    payments = PaymentsListSerializer(many=True, read_only=True)
 
     class Meta:
         model = User
