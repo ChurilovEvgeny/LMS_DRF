@@ -13,3 +13,10 @@ class IsOwner(permissions.BasePermission):
 
     def has_object_permission(self, request, view, obj):
         return obj.owner == request.user
+
+
+class IsSelfProfile(permissions.BasePermission):
+    message = "Это не ваш профиль"
+
+    def has_object_permission(self, request, view, obj):
+        return obj.pk == request.user.pk
