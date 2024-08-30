@@ -15,7 +15,6 @@ from users.serializers import (
 
 class UserViewSet(ModelViewSet):
     queryset = User.objects.all()
-    permission_classes = [AllowAny]
 
     def get_serializer_class(self):
         if self.action == "retrieve":
@@ -26,6 +25,14 @@ class UserViewSet(ModelViewSet):
         user = serializer.save(is_active=True)
         user.set_password(user.password)
         user.save()
+
+    def get_permissions(self):
+        if self.action == 'create':
+            self.permission_classes = [AllowAny,]
+        else:
+            pass
+            # self.permission_classes = super().get_permissions()
+        return [permission() for permission in self.permission_classes]
 
 
 class PaymentListAPIView(ListAPIView):
