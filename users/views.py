@@ -29,10 +29,7 @@ class UserViewSet(ModelViewSet):
     def get_permissions(self):
         if self.action == 'create':
             self.permission_classes = [AllowAny,]
-        else:
-            pass
-            # self.permission_classes = super().get_permissions()
-        return [permission() for permission in self.permission_classes]
+        return super().get_permissions()
 
 
 class PaymentListAPIView(ListAPIView):

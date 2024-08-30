@@ -12,11 +12,11 @@ class LessonSerializer(serializers.ModelSerializer):
 
 class CourseSerializer(serializers.ModelSerializer):
     lessons_count = SerializerMethodField()
-    lessons = LessonSerializer(many=True)
+    lessons = LessonSerializer(many=True, read_only=True)
 
     def get_lessons_count(self, obj):
         return obj.lessons.count()
 
     class Meta:
         model = Course
-        fields = ("name", "preview", "description", "lessons_count", "lessons")
+        fields = ("pk", "name", "preview", "description", "lessons_count", "lessons")
