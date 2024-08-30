@@ -9,7 +9,9 @@ from users.permissions import IsSelfProfile
 from users.serializers import (
     UserSerializer,
     PaymentsListSerializer,
-    UserRetrieveSerializer, UserListSerializer, UserShortSerializer,
+    UserRetrieveSerializer,
+    UserListSerializer,
+    UserShortSerializer,
 )
 
 
@@ -23,7 +25,7 @@ class UserViewSet(ModelViewSet):
         return obj
 
     def get_serializer_class(self):
-        if self.action == 'list':
+        if self.action == "list":
             return UserListSerializer
         elif self.action == "retrieve":
             # Выбираем нужный сериализатор, исходя из совпадающего pk
@@ -39,22 +41,19 @@ class UserViewSet(ModelViewSet):
         user.save()
 
     def get_permissions(self):
-        if self.action == 'create':
-            self.permission_classes = [AllowAny, ]
-        elif self.action in ('list', 'retrieve'):
-            self.permission_classes = [IsAuthenticated, ]
+        if self.action == "create":
+            self.permission_classes = [
+                AllowAny,
+            ]
+        elif self.action in ("list", "retrieve"):
+            self.permission_classes = [
+                IsAuthenticated,
+            ]
         else:
-            self.permission_classes = [IsSelfProfile, ]
+            self.permission_classes = [
+                IsSelfProfile,
+            ]
         return super().get_permissions()
-
-    # def get_permissions(self):
-    #     if self.action == 'create':
-    #         self.permission_classes = [~IsModer, ]
-    #     elif self.action == 'destroy':
-    #         self.permission_classes = [~IsModer | IsOwner, ]
-    #     elif self.action in ['partial_update', 'update', 'retrieve']:
-    #         self.permission_classes = [IsModer | IsOwner, ]
-    #     return super().get_permissions()
 
 
 class PaymentListAPIView(ListAPIView):
