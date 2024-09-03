@@ -16,7 +16,7 @@ urlpatterns = [
     path(
         "token/",
         TokenObtainPairView.as_view(permission_classes=(AllowAny,)),
-        name="token_obtain_pair",
+        name="token",
     ),
     path(
         "token/refresh/",

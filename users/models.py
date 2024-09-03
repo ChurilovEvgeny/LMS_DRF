@@ -74,9 +74,6 @@ class User(AbstractUser):
     def __str__(self):
         return self.email
 
-    def get_email(self):
-        return self.email
-
 
 class Payment(models.Model):
     PAYMENT_CASH = "CASH"
@@ -124,4 +121,4 @@ class Payment(models.Model):
         verbose_name_plural = "Платежи"
 
     def __str__(self):
-        return self.user
+        return str(self.user)

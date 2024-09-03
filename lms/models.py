@@ -1,5 +1,4 @@
 from django.db import models
-
 from utils.utils import (
     generate_filename_course_preview,
     generate_filename_lesson_preview,
