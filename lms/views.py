@@ -4,7 +4,8 @@ from rest_framework.generics import (
     ListAPIView,
     RetrieveAPIView,
     UpdateAPIView,
-    DestroyAPIView, get_object_or_404,
+    DestroyAPIView,
+    get_object_or_404,
 )
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
@@ -28,17 +29,14 @@ class CourseViewSet(ModelViewSet):
 
     def get_permissions(self):
         if self.action == "create":
-            self.permission_classes = [
-                ~IsModer,
-            ]
+            self.permission_classes = [~IsModer, IsAuthenticated]
         elif self.action == "destroy":
             self.permission_classes = [
+                IsAuthenticated,
                 ~IsModer | IsOwner,
             ]
         elif self.action in ["partial_update", "update", "retrieve"]:
-            self.permission_classes = [
-                IsModer | IsOwner,
-            ]
+            self.permission_classes = [IsAuthenticated, IsModer | IsOwner]
         return super().get_permissions()
 
 
@@ -89,7 +87,7 @@ class SubscriptionAPIView(APIView):
 
     def post(self, *args, **kwargs):
         user = self.request.user
-        course_id = self.request.data.get('course')
+        course_id = self.request.data.get("course")
         course = get_object_or_404(Course, pk=course_id)
 
         try:

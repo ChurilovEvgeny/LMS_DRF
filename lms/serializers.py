@@ -9,7 +9,10 @@ class LessonSerializer(serializers.ModelSerializer):
     class Meta:
         model = Lesson
         fields = "__all__"
-        validators = [OnlyYouTubeLinkValidator(field='description'), OnlyYouTubeLinkValidator(field='video_url')]
+        validators = [
+            OnlyYouTubeLinkValidator(field="description"),
+            OnlyYouTubeLinkValidator(field="video_url"),
+        ]
 
 
 class CourseSerializer(serializers.ModelSerializer):
@@ -23,9 +26,17 @@ class CourseSerializer(serializers.ModelSerializer):
 
     def get_is_subscribed(self, obj):
         """Возвращает True, если текущий пользователь подписан на данный курс"""
-        return Subscription.is_exist(self.context.get('request').user.pk, obj.pk)
+        return Subscription.is_exist(self.context.get("request").user.pk, obj.pk)
 
     class Meta:
         model = Course
-        fields = ("pk", "name", "preview", "description", "lessons_count", "is_subscribed", "lessons")
-        validators = [OnlyYouTubeLinkValidator(field='description')]
+        fields = (
+            "pk",
+            "name",
+            "preview",
+            "description",
+            "lessons_count",
+            "is_subscribed",
+            "lessons",
+        )
+        validators = [OnlyYouTubeLinkValidator(field="description")]

@@ -9,7 +9,7 @@ class OnlyYouTubeLinkValidator:
     def __init__(self, field):
         self.field = field
 
-    def __call__(self, value:dict):
+    def __call__(self, value: dict):
         urls = self.__get_urls_from_string(value.get(self.field, ""))
 
         if self.__is_have_not_youtube_urls(urls):

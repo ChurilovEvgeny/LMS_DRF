@@ -51,13 +51,24 @@ class Lesson(models.Model):
 
 
 class Subscription(models.Model):
-    user = models.ForeignKey("users.User", on_delete=models.CASCADE, verbose_name="пользователь",
-                             related_name="subscriptions")
-    course = models.ForeignKey(Course, on_delete=models.CASCADE, verbose_name="курс", related_name="subscriptions")
+    user = models.ForeignKey(
+        "users.User",
+        on_delete=models.CASCADE,
+        verbose_name="пользователь",
+        related_name="subscriptions",
+    )
+    course = models.ForeignKey(
+        Course,
+        on_delete=models.CASCADE,
+        verbose_name="курс",
+        related_name="subscriptions",
+    )
 
     @staticmethod
     def is_exist(user_pk: int, course_pk: int) -> bool:
-        return Subscription.objects.filter(user_id=user_pk, course_id=course_pk).exists()
+        return Subscription.objects.filter(
+            user_id=user_pk, course_id=course_pk
+        ).exists()
 
     def __str__(self):
         return f"{self.user}, {self.course}"
