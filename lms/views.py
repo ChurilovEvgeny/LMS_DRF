@@ -1,14 +1,17 @@
+from rest_framework import status
 from rest_framework.generics import (
     CreateAPIView,
     ListAPIView,
     RetrieveAPIView,
     UpdateAPIView,
-    DestroyAPIView,
+    DestroyAPIView, get_object_or_404,
 )
 from rest_framework.permissions import IsAuthenticated
+from rest_framework.response import Response
+from rest_framework.views import APIView
 from rest_framework.viewsets import ModelViewSet
 
-from lms.models import Course, Lesson
+from lms.models import Course, Lesson, Subscription
 from lms.serializers import CourseSerializer, LessonSerializer
 from users.permissions import IsModer, IsOwner
 
@@ -75,3 +78,24 @@ class LessonDeleteAPIView(DestroyAPIView):
         IsAuthenticated,
         IsOwner | ~IsModer,
     ]
+
+class SubscriptionAPIView(APIView):
+    # serializer_class = ...
+    permission_classes = [IsAuthenticated]
+
+    def post(self, *args, **kwargs):
+        user = self.request.user
+        course_id = self.request.data.get('course')
+        course = get_object_or_404(Course, pk=course_id)
+
+        try:
+            subscription = Subscription.objects.get(user=user, course=course)
+            subscription.delete()
+            stat = status.HTTP_204_NO_CONTENT
+            data = None
+        except Subscription.DoesNotExist as e:
+            Subscription.objects.create(user=user, course=course)
+            stat = status.HTTP_201_CREATED
+            data = {"user": user.pk, "course": course.pk}
+
+        return Response(data, status=stat)
