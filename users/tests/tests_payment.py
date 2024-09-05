@@ -83,5 +83,3 @@ class PaymentTestCase(APITestCase):
 
         self.assertEqual(data[1]["id"], self.payments[1]["pk"])
         self.assertEqual(data[1]["payment_method"], self.payments[1]["payment_method"])
-
-
