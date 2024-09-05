@@ -29,6 +29,7 @@ INSTALLED_APPS = [
     "corsheaders",
     "lms",
     "users",
+    "payment",
 ]
 
 MIDDLEWARE = [
@@ -140,3 +141,5 @@ CSRF_TRUSTED_ORIGINS = [
 ]
 
 CORS_ALLOW_ALL_ORIGINS = False
+
+STRIPE_KEY = os.getenv("STRIPE_KEY")

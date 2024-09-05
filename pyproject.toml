@@ -18,6 +18,8 @@ django-filter = "^24.3"
 djangorestframework-simplejwt = "^5.3.1"
 coverage = "^7.6.1"
 django-cors-headers = "^4.4.0"
+stripe = "^10.9.0"
+currencyconverter = "^0.17.30"
 
 
 [build-system]
