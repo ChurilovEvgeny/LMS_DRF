@@ -1,9 +1,11 @@
+from drf_spectacular.utils import extend_schema
 from rest_framework import generics, status
 from rest_framework.response import Response
 
 from payment.models import Payment
 from payment.serializers import PaymentSerializer
 from payment.services import pay, get_session_info
+from payment.views_docs_data import payment_retrieve_API_view_example
 
 
 class PaymentListAPIView(generics.ListAPIView):
@@ -25,6 +27,7 @@ class PaymentRetrieveAPIView(generics.RetrieveAPIView):
     serializer_class = PaymentSerializer
     queryset = Payment.objects.all()
 
+    @extend_schema(examples=payment_retrieve_API_view_example)
     def get(self, request, *args, **kwargs):
         obj = self.retrieve(request, *args, **kwargs)
         session_id = obj.data.get("session_id")
