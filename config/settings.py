@@ -147,8 +147,8 @@ CORS_ALLOW_ALL_ORIGINS = False
 STRIPE_KEY = os.getenv("STRIPE_KEY")
 
 SPECTACULAR_SETTINGS = {
-    'TITLE': 'LMS DRF',
-    'DESCRIPTION': 'Обучающая платформа REST',
-    'VERSION': '1.0.0',
-    'SERVE_INCLUDE_SCHEMA': False,
+    "TITLE": "LMS DRF",
+    "DESCRIPTION": "Обучающая платформа REST",
+    "VERSION": "1.0.0",
+    "SERVE_INCLUDE_SCHEMA": False,
 }
