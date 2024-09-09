@@ -8,6 +8,9 @@ from lms.models import Notifications
 
 @shared_task
 def send_notification_mail_on_course_update():
+    """Данная задача выполняет отправку писем подписчикам курсов,
+    если курс (в т ч и уроки) изменился.
+    Отправка осуществляется через 4 часа после последнего изменения"""
     four_hours = timezone.now() - timezone.timedelta(hours=4)
     notifications = Notifications.objects.filter(course__last_update__lt=four_hours)
     for notification in notifications:

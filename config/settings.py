@@ -174,6 +174,10 @@ CELERY_BEAT_SCHEDULE = {
         'task': 'lms.tasks.send_notification_mail_on_course_update',
         'schedule': timedelta(minutes=5),
     },
+    'check_user_activity': {
+        'task': 'users.tasks.deactivate_unactive_users',
+        'schedule': timedelta(days=1),
+    },
 }
 
 EMAIL_BACKEND = os.getenv('EMAIL_BACKEND')
