@@ -12,7 +12,7 @@ from rest_framework.response import Response
 from rest_framework.views import APIView
 from rest_framework.viewsets import ModelViewSet
 
-from lms.models import Course, Lesson, Subscription
+from lms.models import Course, Lesson, Subscription, Notifications
 from lms.paginators import CustomPagePagination
 from lms.serializers import CourseSerializer, LessonSerializer
 from users.permissions import IsModer, IsOwner
@@ -38,6 +38,10 @@ class CourseViewSet(ModelViewSet):
         elif self.action in ["partial_update", "update", "retrieve"]:
             self.permission_classes = [IsAuthenticated, IsModer | IsOwner]
         return super().get_permissions()
+
+    def perform_update(self, serializer):
+        course = serializer.save()
+        Notifications.objects.get_or_create(course=course)
 
 
 class LessonCreateAPIView(CreateAPIView):
@@ -71,6 +75,11 @@ class LessonUpdateAPIView(UpdateAPIView):
         IsAuthenticated,
         IsModer | IsOwner,
     ]
+
+    def perform_update(self, serializer):
+        lesson = serializer.save()
+        lesson.course.update_last_update()  # при изменении урока нужно обновить дату в курсе
+        Notifications.objects.get_or_create(course=lesson.course)
 
 
 class LessonDeleteAPIView(DestroyAPIView):

@@ -169,9 +169,21 @@ CELERY_TASK_TRACK_STARTED = True
 # Максимальное время на выполнение задачи
 CELERY_TASK_TIME_LIMIT = 30 * 60
 
-# CELERY_BEAT_SCHEDULE = {
-#     'task-name': {
-#         'task': 'myapp.tasks.my_task',  # Путь к задаче
-#         'schedule': timedelta(minutes=10),  # Расписание выполнения задачи (например, каждые 10 минут)
-#     },
-# }
+CELERY_BEAT_SCHEDULE = {
+    'send_update_notifications': {
+        'task': 'lms.tasks.send_notification_mail_on_course_update',
+        'schedule': timedelta(minutes=5),
+    },
+}
+
+EMAIL_BACKEND = os.getenv('EMAIL_BACKEND')
+EMAIL_HOST = os.getenv('EMAIL_HOST')
+EMAIL_USE_TLS = os.getenv('EMAIL_USE_TLS', False) == 'True'
+EMAIL_PORT = os.getenv('EMAIL_PORT')
+EMAIL_USE_SSL = os.getenv('EMAIL_USE_SSL', False) == 'True'
+EMAIL_HOST_USER = os.getenv('EMAIL_HOST_USER')
+EMAIL_HOST_PASSWORD = os.getenv('EMAIL_HOST_PASSWORD')
+
+DEFAULT_FROM_EMAIL = EMAIL_HOST_USER
+SERVER_EMAIL = EMAIL_HOST_USER
+EMAIL_ADMIN = EMAIL_HOST_USER
