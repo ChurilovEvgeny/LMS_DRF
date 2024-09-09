@@ -38,5 +38,6 @@ class CourseSerializer(serializers.ModelSerializer):
             "lessons_count",
             "is_subscribed",
             "lessons",
+            "last_update"
         )
         validators = [OnlyYouTubeLinkValidator(field="description")]

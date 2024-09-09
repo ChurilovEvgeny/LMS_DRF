@@ -1,4 +1,6 @@
 from django.db import models
+from django.utils import timezone
+
 from utils.utils import (
     generate_filename_course_preview,
     generate_filename_lesson_preview,
@@ -17,6 +19,12 @@ class Course(models.Model):
     owner = models.ForeignKey(
         "users.User", on_delete=models.CASCADE, related_name="courses", **NULLABLE
     )
+
+    last_update = models.DateTimeField(verbose_name='Последняя дата/время обновления курса', auto_now=True)
+
+    def update_last_update(self):
+        self.last_update = timezone.now()
+        self.save()
 
     def __str__(self):
         return self.name
@@ -75,3 +83,19 @@ class Subscription(models.Model):
     class Meta:
         verbose_name = "Подписка"
         verbose_name_plural = "Подписки"
+
+
+class Notifications(models.Model):
+    course = models.OneToOneField(
+        Course,
+        on_delete=models.CASCADE,
+        verbose_name="курс",
+        related_name="notifications",
+    )
+
+    def __str__(self):
+        return f"{self.course}"
+
+    class Meta:
+        verbose_name = "Уведомление"
+        verbose_name_plural = "Уведомления"
